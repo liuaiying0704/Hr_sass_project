@@ -3,7 +3,7 @@
     <el-form
       ref="loginForm"
       :model="loginForm"
-      :rules="loginRules"
+      :rules="loginFormRules"
       class="login-form"
       auto-complete="on"
       label-position="left"
@@ -16,30 +16,30 @@
       </div>
 
       <!-- 表单区域 -->
-      <el-form-item>
+      <el-form-item prop="mobile">
         <i class="el-icon-user-solid svg-container"></i>
-        <el-input></el-input>
+        <el-input v-model="loginForm.mobile"></el-input>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item prop="password">
         <i class="svg-container">
           <svg-icon iconClass="password"></svg-icon>
         </i>
-        <el-input></el-input>
+        <el-input v-model="loginForm.password" type="password"></el-input>
       </el-form-item>
 
-      <!--按钮 -->
+      <!--按钮   @click.native.prevent="handleLogin"-->
       <el-button
         class="loginBtn"
-        :loading="loading"
+        :loading="isLogin"
         type="primary"
         style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleLogin"
+        @click="login"
         >登陆</el-button
       >
 
       <div class="tips">
-        <span style="margin-right: 20px">账号: 13800000002</span>
+        <span style="margin-right: 20px">账号: 13800000001</span>
         <span> 密码: 123456</span>
       </div>
     </el-form>
@@ -50,7 +50,54 @@
 import { validUsername } from '@/utils/validate'
 
 export default {
-  name: 'Login'
+  name: 'Login',
+  data() {
+    return {
+      // 定义数据
+      loginForm: {
+        mobile: '13800000001',
+        password: '123456'
+      },
+      loginFormRules: {
+        // 表单校验规则和数据名一致
+        mobile: [
+          { required: true, message: '请输入手机号', trigger: 'blur' },
+          {
+            pattern: /^(?:(?:\+|00)86)?1[3-9]\d{9}$/,
+            message: '密码格式不正确',
+            trigger: 'blur'
+          }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' }
+          // {
+          //   pattern:
+          //     /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_!@#$%^&*`~()-+=]+$)(?![a-z0-9]+$)(?![a-z\W_!@#$%^&*`~()-+=]+$)(?![0-9\W_!@#$%^&*`~()-+=]+$)[a-zA-Z0-9\W_!@#$%^&*`~()-+=]/,
+          //   message: '密码包含数字字母特殊字符，并且不能少于6位',
+          //   trigger: 'blur'
+          // }
+        ]
+      },
+      isLogin: false
+    }
+  },
+  methods: {
+    async login() {
+      this.isLogin = true
+      try {
+        await this.$refs.loginForm.validate()
+        // console.log(this.loginForm)
+        await this.$store.dispatch('user/getToken', this.loginForm)
+        this.$router.push('/')
+        this.$message.success('登陆成功')
+        // Element   message两种使用方式
+        // 如果在组件内，  this.$message.success('登陆成功')
+        // 如果在非组件内，可引入import { Message } from 'element-ui'； 使用时， Message.error(message)
+      } finally {
+        this.isLogin = false
+      }
+    }
+  }
 }
 </script>
 
@@ -103,6 +150,9 @@ $cursor: #68b0fe;
     background: rgba(255, 255, 255, 0.7); // 输入登录表单的背景色
     border-radius: 5px;
     color: #454545;
+  }
+  .el-form-item__error {
+    color: #fff;
   }
 }
 </style>
