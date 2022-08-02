@@ -11,3 +11,24 @@ export function login(data) {
     data
   })
 }
+
+/**
+ *获取用户信息
+ * @returns Promise
+ */
+export function getUserInfoApi() {
+  return request({
+    url: '/sys/profile',
+    method: 'post'
+  })
+}
+/**
+ * 获取详细的信息
+ * @param {*} id
+ * @returns promise
+ */
+export function getUserDetail(id) {
+  return request({
+    url: '/sys/user/' + id
+  })
+}
