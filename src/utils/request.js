@@ -9,8 +9,8 @@ import router from '@/router'
 function timeOut() {
   const currentTime = Date.now()
   const tokenTime = getTokenTime()
-  // const timeout = 2 * 60 * 60 * 1000
-  const timeout = 2 * 1000
+  const timeout = 2 * 60 * 60 * 1000
+  // const timeout = 2 * 1000
   return currentTime - tokenTime > timeout
 }
 const service = axios.create({
