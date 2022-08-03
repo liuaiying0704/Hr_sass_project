@@ -14,6 +14,8 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+// 引入自定义指令
+import * as directives from '@/directives'
 
 // mock假数据，例如：模拟登陆（请求接口）。后期删除
 if (process.env.NODE_ENV === 'production') {
@@ -28,9 +30,13 @@ Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
 
+// 自定义指令
+for (let key in directives) {
+  Vue.directive(key, directives[key])
+}
 new Vue({
   el: '#app',
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App)
 })

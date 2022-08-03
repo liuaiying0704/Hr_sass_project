@@ -2,8 +2,17 @@
 import { Message } from 'element-ui'
 import axios from 'axios'
 import store from '@/store'
-//   baseURL: 'http://localhost:8888/api',
+import { getTokenTime } from '@/utils/auth'
+import router from '@/router'
 
+//   baseURL: 'http://localhost:8888/api',
+function timeOut() {
+  const currentTime = Date.now()
+  const tokenTime = getTokenTime()
+  // const timeout = 2 * 60 * 60 * 1000
+  const timeout = 2 * 1000
+  return currentTime - tokenTime > timeout
+}
 const service = axios.create({
   // 开发环境代理是**`/api`**，`npm run dev` 读取env.development
   // 生产环境, `npm run build` 读取env.production
@@ -14,10 +23,19 @@ const service = axios.create({
 }) // 创建一个axios的实例
 
 // 请求拦截器
-service.interceptors.request.use((config) => {
+service.interceptors.request.use(async (config) => {
   // 当前请求的配置
   if (store.state.user.token) {
-    config.headers.Authorization = 'Bearer ' + store.state.user.token
+    // console.log(currentTime - tokenTime)
+    // 如果请求超时 timeOut()
+    if (timeOut()) {
+      console.log('跳转登陆页')
+      await store.dispatch('user/logout')
+      router.push('/login')
+      return Promise.reject(new Error('登陆过期'))
+    } else {
+      config.headers.Authorization = 'Bearer ' + store.state.user.token
+    }
   }
   return config
 }) // 请求拦截器
@@ -33,9 +51,16 @@ service.interceptors.response.use(
     return Promise.reject(new Error(message))
   },
   // 地址和请求错误的回调
-  (error) => {
+  async (error) => {
+    // ⭐️
+    if (error?.response?.stauts === 401) {
+      Message.error('登陆过期')
+      await store.dispatch('user/logout')
+      router.push('/login')
+    } else {
+      Message.error(error.message)
+    }
     // console.dir(error)
-    Message.error('请求异常')
     return Promise.reject(error)
   }
 ) // 响应拦截器

@@ -14,9 +14,11 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
-            :src="$store.state.user.userInfo.staffPhoto"
+            :src="$store.state.user.userInfo.staffPhoto + 11"
             class="user-avatar"
+            v-imgError="defaultImg"
           />
+          <!-- 自定义指令 -->
           <span> {{ $store.state.user.userInfo.username }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
@@ -37,7 +39,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
+import defaultImg from '@/assets/common/head.jpg'
 export default {
   components: {
     Breadcrumb,
@@ -46,6 +48,15 @@ export default {
   computed: {
     ...mapGetters(['sidebar', 'avatar'])
   },
+  data() {
+    return {
+      // 引入图片的两种方式
+      // defaultImg: 'http://likede2-admin.itheima.net/img/logo.3673fab5.png'
+      //  import defaultImg from '@/assets/common/head.jpg'
+      defaultImg: defaultImg
+    }
+  },
+
   methods: {
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
