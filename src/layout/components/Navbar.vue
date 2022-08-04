@@ -14,7 +14,7 @@
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
-            :src="$store.state.user.userInfo.staffPhoto + 11"
+            :src="$store.state.user.userInfo.staffPhoto"
             class="user-avatar"
             v-imgError="defaultImg"
           />
@@ -39,7 +39,7 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import defaultImg from '@/assets/common/head.jpg'
+// import defaultImg from '@/assets/common/head.jpg'
 export default {
   components: {
     Breadcrumb,
@@ -51,9 +51,9 @@ export default {
   data() {
     return {
       // 引入图片的两种方式
-      // defaultImg: 'http://likede2-admin.itheima.net/img/logo.3673fab5.png'
+      defaultImg: 'http://likede2-admin.itheima.net/img/logo.3673fab5.png'
       //  import defaultImg from '@/assets/common/head.jpg'
-      defaultImg: defaultImg
+      // defaultImg: defaultImg
     }
   },
 

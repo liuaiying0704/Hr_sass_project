@@ -30,7 +30,7 @@ export default {
       const userInfo = await getUserDetail(userBaseInfo.userId)
       // console.log(userInfo)
       context.commit('setUserInfo', { ...userInfo, ...userBaseInfo })
-      // console.log({ ...userInfo, ...userBaseInfo })
+      console.log({ ...userInfo, ...userBaseInfo })
     },
     // 获取详细的用户信息
 
