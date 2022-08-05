@@ -26,7 +26,7 @@ export default {
     // 获取用户信息
     async getUserInfo(context) {
       const userBaseInfo = await getUserInfoApi()
-      // console.log(userBaseInfo)
+      console.log(userBaseInfo)
       const userInfo = await getUserDetail(userBaseInfo.userId)
       // console.log(userInfo)
       context.commit('setUserInfo', { ...userInfo, ...userBaseInfo })
