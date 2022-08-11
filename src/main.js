@@ -16,6 +16,9 @@ import '@/icons' // icon
 import '@/permission' // permission control
 // 引入自定义指令
 import * as directives from '@/directives'
+//
+import components from '@/components'
+Vue.use(components)
 
 // mock假数据，例如：模拟登陆（请求接口）。后期删除
 if (process.env.NODE_ENV === 'production') {
