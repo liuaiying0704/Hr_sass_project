@@ -18,6 +18,9 @@ import '@/permission' // permission control
 import * as directives from '@/directives'
 //
 import components from '@/components'
+// 过滤器
+import * as filters from '@/filters'
+
 Vue.use(components)
 
 // mock假数据，例如：模拟登陆（请求接口）。后期删除
@@ -37,6 +40,12 @@ Vue.config.productionTip = false
 for (let key in directives) {
   Vue.directive(key, directives[key])
 }
+
+// 过滤时间
+for (let key in filters) {
+  Vue.filter(key, filters[key])
+}
+
 new Vue({
   el: '#app',
   router,
