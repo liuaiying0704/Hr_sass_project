@@ -21,6 +21,7 @@ export default {
   created() {},
 
   methods: {
+    // 上传之前
     excelSuccess({ name }) {
       if (!name.endsWith('.xlsx')) {
         this.$message.error('请选择xlsx文件')
@@ -28,6 +29,7 @@ export default {
       }
       return true
     },
+    // 上传成功
     async onSuccess({ header, results }) {
       const newArr = results.map((item) => {
         const obj = {}
