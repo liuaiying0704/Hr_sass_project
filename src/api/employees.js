@@ -67,3 +67,16 @@ export function updatePersonal(data) {
     data
   })
 }
+
+/**
+ * 添加分配角色 /sys/user/assignRoles
+ * @param {*} data  员工id  角色ID数组
+ * @returns promise
+ */
+export function assignRoles(data) {
+  return request({
+    url: `/sys/user/assignRoles`,
+    method: 'put',
+    data
+  })
+}

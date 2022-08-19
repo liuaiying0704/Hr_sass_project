@@ -79,10 +79,7 @@
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="showAssignDialog = true"
+              <el-button type="text" size="small" @click="showAssign(row.id)"
                 >角色</el-button
               >
               <el-button type="text" size="small" @click="onRemove(row.id)"
@@ -119,7 +116,10 @@
     </el-dialog>
 
     <!-- 分配角色 -->
-    <AssignRole :visible.sync="showAssignDialog" />
+    <AssignRole
+      :visible.sync="showAssignDialog"
+      :currentEmployeesId="currentEmployeesId"
+    />
   </div>
 </template>
 
@@ -145,7 +145,9 @@ export default {
       },
       showAddEmployees: false,
       erCodeDialog: false,
-      showAssignDialog: false
+      showAssignDialog: false,
+      // 当前员工 的ID--弹层的使用
+      currentEmployeesId: ''
     }
   },
   components: {
@@ -196,6 +198,7 @@ export default {
 
     // 点击事件excelExport，引入解构出 export_json_to_excel
     async excelExport() {
+      // 引入解构
       const { export_json_to_excel } = await import('@/vendor/Export2Excel')
       const { rows } = await getEmployeesInfoApi({
         page: 1,
@@ -226,7 +229,8 @@ export default {
         merges: ['A1:A2', 'B1:F1', 'G1:G2']
       })
     },
-    // 图片生成二维码的弹层  插件qrcode
+
+    // 图片生成二维码的弹层🌼🌼🌼  1.下载插件qrcode  2.引入：import qrcode from 'qrcode'，使用qrcode
     showErCodeDialog(pic) {
       if (!pic) return this.$message.error('该用户还未上传图片')
       this.erCodeDialog = true
@@ -234,6 +238,12 @@ export default {
         const canvas = document.getElementById('canvas')
         qrcode.toCanvas(canvas, pic)
       })
+    },
+
+    //点击角色弹层显示
+    showAssign(id) {
+      this.showAssignDialog = true
+      this.currentEmployeesId = id
     }
   }
 }
