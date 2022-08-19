@@ -142,6 +142,7 @@ export default {
       this.pageSize = val
       this.getRoles()
     },
+
     onClose() {
       this.addDialogVisible = false
     },

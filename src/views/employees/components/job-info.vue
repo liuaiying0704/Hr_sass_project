@@ -1,7 +1,9 @@
 <template>
   <div>
-    <!-- <UploadImage @onSuccess="onSuccess1"></UploadImage>
-    <UploadImage @onSuccess="onSuccess2"></UploadImage> -->
+    <i
+      class="el-icon-printer"
+      @click="$router.push('/employees/print?type=job')"
+    ></i>
   </div>
 </template>
 

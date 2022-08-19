@@ -20,6 +20,9 @@ import * as directives from '@/directives'
 import components from '@/components'
 // 过滤器
 import * as filters from '@/filters'
+// // 自定义指令
+// import Print from 'vue-print-nb'
+// Vue.use(Print)
 
 Vue.use(components)
 

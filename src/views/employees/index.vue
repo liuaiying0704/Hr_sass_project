@@ -33,7 +33,13 @@
                 :src="row.staffPhoto"
                 alt=""
                 v-imgError="require('@/assets/common/head.jpg')"
-                style="border-radius: 50%; width: 100px; height: 100px,padding: 10px"
+                style="
+                  border-radius: 50%;
+                  width: 100px;
+                  height: 100px;
+                  padding: 10px;
+                "
+                @click="showErCodeDialog(row.staffPhoto)"
               />
             </template>
           </el-table-column>
@@ -63,11 +69,22 @@
           </el-table-column>
           <el-table-column label="操作" sortable="" fixed="right" width="280">
             <template slot-scope="{ row }">
-              <el-button type="text" size="small">查看</el-button>
+              <!--点击查看，跳转路由 -->
+              <el-button
+                type="text"
+                size="small"
+                @click="$router.push('/employees/detail/' + row.id)"
+                >查看</el-button
+              >
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="showAssignDialog = true"
+                >角色</el-button
+              >
               <el-button type="text" size="small" @click="onRemove(row.id)"
                 >删除</el-button
               >
@@ -95,6 +112,14 @@
       @add-success="getEmployeesInfoApi"
       :visible.sync="showAddEmployees"
     ></add-employees>
+
+    <!--头像二维码 dialog -->
+    <el-dialog title="二维码" :visible.sync="erCodeDialog" width="30%">
+      <canvas id="canvas"></canvas>
+    </el-dialog>
+
+    <!-- 分配角色 -->
+    <AssignRole :visible.sync="showAssignDialog" />
   </div>
 </template>
 
@@ -102,8 +127,10 @@
 import { getEmployeesInfoApi, delEmployee } from '@/api/employees'
 import addEmployees from './components/add-employees'
 import employee from '@/constant/employees'
-import { get } from 'js-cookie'
+import qrcode from 'qrcode'
+import AssignRole from './components/assign-role.vue'
 const { hireType, exportExcelMapPath } = employee
+
 export default {
   data() {
     return {
@@ -116,11 +143,14 @@ export default {
         // 一页条数
         size: 10
       },
-      showAddEmployees: false
+      showAddEmployees: false,
+      erCodeDialog: false,
+      showAssignDialog: false
     }
   },
   components: {
-    addEmployees
+    addEmployees,
+    AssignRole
   },
   created() {
     this.getEmployeesInfoApi()
@@ -143,6 +173,7 @@ export default {
       // return '未知'
 
       // 方法2
+
       const findItem = employee.hireType.find((item) => {
         item.id === cellValue
       })
@@ -189,8 +220,19 @@ export default {
         filename: 'excel-list', //非必填
         autoWidth: true, //非必填
         bookType: 'xlsx', //非必填
-        mutiHeader: [['手机号', '']]
-        // merges: ['A1:A2', 'B1:F1', 'G1:G2']
+        // 多个表头
+        mutiHeader: [['手机号', '其他信息', '', '', '', '', '部门']],
+        // 合并
+        merges: ['A1:A2', 'B1:F1', 'G1:G2']
+      })
+    },
+    // 图片生成二维码的弹层  插件qrcode
+    showErCodeDialog(pic) {
+      if (!pic) return this.$message.error('该用户还未上传图片')
+      this.erCodeDialog = true
+      this.$nextTick(() => {
+        const canvas = document.getElementById('canvas')
+        qrcode.toCanvas(canvas, pic)
       })
     }
   }

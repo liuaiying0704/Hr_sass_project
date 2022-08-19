@@ -32,3 +32,17 @@ export function getUserDetail(id) {
     url: '/sys/user/' + id
   })
 }
+// /sys/user/{id}
+
+/**
+ * 保存员工基本信息
+ * @param {*} id
+ * @returns promise
+ */
+export function saveUserDetail(data, id) {
+  return request({
+    url: '/sys/user/' + id,
+    method: 'put',
+    data
+  })
+}
