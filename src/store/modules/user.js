@@ -1,5 +1,8 @@
 import { getUserInfoApi, getUserDetail, login } from '@/api/user'
 import { setTokenTime } from '@/utils/auth'
+
+import { resetRouter } from '@/router'
+
 export default {
   namespaced: true,
   state: {
@@ -26,11 +29,12 @@ export default {
     // 获取用户信息
     async getUserInfo(context) {
       const userBaseInfo = await getUserInfoApi()
-      console.log(userBaseInfo)
+      // console.log(userBaseInfo)
       const userInfo = await getUserDetail(userBaseInfo.userId)
       // console.log(userInfo)
       context.commit('setUserInfo', { ...userInfo, ...userBaseInfo })
-      console.log({ ...userInfo, ...userBaseInfo })
+      // console.log({ ...userInfo, ...userBaseInfo })
+      return userBaseInfo
     },
     // 获取详细的用户信息
 
@@ -38,6 +42,10 @@ export default {
     logout(context) {
       context.commit('setToken', '')
       context.commit('setUserInfo', {})
+      // 退出重置路由规则
+      resetRouter()
+      // 重置vuex,context升级为全局的context，{root:true}
+      context.commit('permission/setRoutes', [], { root: true })
     }
   }
 }

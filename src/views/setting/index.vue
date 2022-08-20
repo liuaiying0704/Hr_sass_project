@@ -14,7 +14,10 @@
             <el-table-column prop="description" label="描述"> </el-table-column>
             <el-table-column label="操作">
               <template v-slot="scope">
-                <el-button size="small" type="success" @click="showRightDialog"
+                <el-button
+                  size="small"
+                  type="success"
+                  @click="showRightDialog(scope.row.id)"
                   >分配权限</el-button
                 >
                 <el-button size="small" type="primary">编辑</el-button>
@@ -89,17 +92,20 @@
         </span>
       </el-dialog>
 
-      <!-- 给角色分配权限 -->
+      <!-- 给角色分配权限弹框 -->
       <el-dialog
+        destroy-on-close
         title="给角色分配权限"
         :visible.sync="setRightDialog"
         width="50%"
+        @close="setRightDialogClose"
       >
         <!--  node-key="id" 每个树节点用来作为唯一标识的属性，整棵树应该是唯一的 -->
         <!--  show-checkbox 节点是否可被选择-->
         <!--  default-expand-all 是否默认展开所有节点-->
         <!-- default-checked-keys 默认勾选的节点的 key 的数组 -->
         <el-tree
+          ref="perTree"
           node-key="id"
           show-checkbox
           default-expand-all
@@ -109,8 +115,8 @@
         ></el-tree>
 
         <span slot="footer" class="dialog-footer">
-          <el-button @click="setRightDialog = false">取 消</el-button>
-          <el-button type="primary">确 定</el-button>
+          <el-button @click="setRightDialogClose">取 消</el-button>
+          <el-button type="primary" @click="onSaveRight">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -118,7 +124,13 @@
 </template>
 
 <script>
-import { getRolesApi, addRoleApi, removeRoleApi } from '@/api/role'
+import {
+  getRolesApi,
+  addRoleApi,
+  removeRoleApi,
+  getRolesInfo,
+  assignPerm
+} from '@/api/role'
 import { getCompanyIdApi } from '@/api/setting'
 import { getPermissionList } from '@/api/permission'
 import { transListToTree } from '@/utils'
@@ -151,7 +163,8 @@ export default {
       // 树形的权限点
       permissions: [],
       // 默认选中的节点
-      defaultCheckedKeys: ['1', '1063315016368918528']
+      defaultCheckedKeys: [],
+      roleId: ''
     }
   },
 
@@ -195,9 +208,9 @@ export default {
       this.addRoleForm.description = ''
     },
     async deleteRole(id) {
-      console.log(id)
+      // console.log(id)
       await removeRoleApi(id)
-      console.log('删除成功')
+      // console.log('删除成功')
       this.getRoles()
     },
     //
@@ -214,8 +227,14 @@ export default {
       }
     },
     // 点击弹出对话框
-    showRightDialog() {
+    async showRightDialog(id) {
       this.setRightDialog = true
+      const res = await getRolesInfo(id)
+      console.log(res.permIds)
+      // 接口获取，已有的权限res.permIds
+      this.defaultCheckedKeys = res.permIds
+      //角色ID转存
+      this.roleId = id
     },
 
     // 获取权限
@@ -224,6 +243,25 @@ export default {
       const treePermission = transListToTree(res, '0')
       this.permissions = treePermission
       console.log(this.permissions)
+    },
+    setRightDialogClose() {
+      this.defaultCheckedKeys = []
+      this.setRightDialog = false
+    },
+
+    // 点击权限的确定按钮
+    async onSaveRight() {
+      // console.log(this.roleId)
+      // 已选中的权限
+      // console.log(this.$refs.perTree.getCheckedKeys())
+      await assignPerm({
+        // 角色id
+        id: this.roleId,
+        // 权限组
+        permIds: this.$refs.perTree.getCheckedKeys()
+      })
+      this.setRightDialog = false
+      this.$message.success('分配成功')
     }
   }
 }
