@@ -3,7 +3,10 @@
     <div class="app-container">
       <el-tabs v-model="activeName">
         <el-tab-pane label="角色管理" name="first">
-          <el-button type="primary" @click="addDialogVisible = true"
+          <el-button
+            type="primary"
+            @click="addDialogVisible = true"
+            v-if="isHas(point.roles.add)"
             >新增角色</el-button
           >
           <!-- table -->
@@ -134,6 +137,10 @@ import {
 import { getCompanyIdApi } from '@/api/setting'
 import { getPermissionList } from '@/api/permission'
 import { transListToTree } from '@/utils'
+
+// // 权限点
+// import permissionPoint from '@/constant/permission'
+import mixinsPermissionPoint from '@/mixins/permission'
 export default {
   data() {
     return {
@@ -165,8 +172,12 @@ export default {
       // 默认选中的节点
       defaultCheckedKeys: [],
       roleId: ''
+
+      // 权限按钮
+      // point: permissionPoint
     }
   },
+  mixins: [mixinsPermissionPoint],
 
   created() {
     this.getRoles()

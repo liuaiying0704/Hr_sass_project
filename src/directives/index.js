@@ -1,3 +1,4 @@
+import store from '@/store'
 export const imgError = {
   // inserted: function (el, { value }) {
   //   // 参数1：el为自定义指令的名字
@@ -29,6 +30,15 @@ export const imgError = {
   update(el, { value }) {
     if (!el.src) {
       el.src = value
+    }
+  }
+}
+// 按钮权限自定义方式，，在全局注册，只需要在使用处： v-isHas="point.employees.import"  传入用户的当前权限点
+export const isHas = {
+  inserted(el, binding) {
+    const has = store.state.permission.points.includes(binding.value)
+    if (!has) {
+      el.remove()
     }
   }
 }

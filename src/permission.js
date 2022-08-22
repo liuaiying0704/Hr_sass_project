@@ -29,6 +29,10 @@ router.beforeEach(async (to, from, next) => {
       //   ...routes,
       //   { path: '*', redirect: '/404', hidden: true }
       // ])
+
+      // 按钮权限
+      await store.dispatch('permission/setPointsAction', roles.points) //将roles传给store、permission中
+
       next(to.path)
     }
     // 1登陆.

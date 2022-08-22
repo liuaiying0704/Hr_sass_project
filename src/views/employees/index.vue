@@ -12,12 +12,18 @@
             size="small"
             type="warning"
             @click="$router.push('/import')"
-            >导入</el-button
+            v-isHas="point.employees.import"
+          >
+            导入</el-button
           >
           <el-button size="small" type="danger" @click="excelExport"
             >导出</el-button
           >
-          <el-button size="small" type="primary" @click="addEmployees"
+          <el-button
+            size="small"
+            type="primary"
+            @click="addEmployees"
+            v-if="isHas(point.employees.add)"
             >新增员工</el-button
           >
         </template>
@@ -129,7 +135,10 @@ import addEmployees from './components/add-employees'
 import employee from '@/constant/employees'
 import qrcode from 'qrcode'
 import AssignRole from './components/assign-role.vue'
+
 const { hireType, exportExcelMapPath } = employee
+// import permissionPoint from '@/constant/permission'
+import mixinsPermissionPoint from '@/mixins/permission'
 
 export default {
   data() {
@@ -148,8 +157,13 @@ export default {
       showAssignDialog: false,
       // 当前员工 的ID--弹层的使用
       currentEmployeesId: ''
+      // 权限按钮
+      // point: permissionPoint
     }
   },
+
+  mixins: [mixinsPermissionPoint],
+
   components: {
     addEmployees,
     AssignRole
@@ -244,6 +258,11 @@ export default {
     showAssign(id) {
       this.showAssignDialog = true
       this.currentEmployeesId = id
+    },
+
+    // 员工按钮权限
+    isHas(point) {
+      return this.$store.state.permission.points.includes(point)
     }
   }
 }

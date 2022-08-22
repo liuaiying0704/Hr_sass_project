@@ -2,12 +2,16 @@ import router, { constantRoutes, asyncRoutes } from '@/router'
 export default {
   namespaced: true,
   state: {
-    routes: [] //问题背景，菜单的渲染是通过this.router.options.routes获取router中定义的路由，动态路由不在里面，因此菜单侧边栏缺失。
+    routes: [], //问题背景，菜单的渲染是通过this.router.options.routes获取router中定义的路由，动态路由不在里面，因此菜单侧边栏缺失。
+    points: [] //按钮权限
   },
   mutations: {
     setRoutes(state, routes) {
       //静态+动态路由
       state.routes = [...constantRoutes, ...routes]
+    },
+    setPoints(state, payload) {
+      state.points = payload
     }
   },
   actions: {
@@ -26,6 +30,9 @@ export default {
         ...routes,
         { path: '*', redirect: '/404', hidden: true }
       ])
+    },
+    setPointsAction(context, points) {
+      context.commit('setPoints', points)
     }
   }
 }
