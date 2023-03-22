@@ -79,12 +79,15 @@ export default {
       isLogin: false
     }
   },
+  created() {
+    console.log('生产')
+  },
   methods: {
     async login() {
       this.isLogin = true
       try {
         await this.$refs.loginForm.validate()
-        // console.log(this.loginForm)
+        console.log(this.loginForm)
         await this.$store.dispatch('user/getToken', this.loginForm)
         this.$router.push('/')
         this.$message.success('登陆成功')

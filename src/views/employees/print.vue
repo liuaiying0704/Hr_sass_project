@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container" id="myPrint">
-    <!-- 打印功能：自定义指令，加字符串选择器  main。js引入注册-->
+    <!-- 打印功能：自定义指令，加字符串选择器  main.js引入注册-->
     <el-button v-print="'#myPrint'">打印</el-button>
     <div class="app-container">
       <el-card>

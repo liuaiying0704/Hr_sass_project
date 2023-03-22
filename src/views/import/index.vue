@@ -12,14 +12,15 @@ import employees from '@/constant/employees'
 const { mapKeyPath } = employees
 import { importEmployees } from '@/api/employees'
 import { formatTime } from '@/filters'
-
+import uploadExcel from '@/components/UploadExcel'
 export default {
   data() {
     return {}
   },
-
   created() {},
-
+  components: {
+    uploadExcel
+  },
   methods: {
     // 上传之前
     excelSuccess({ name }) {

@@ -14,7 +14,17 @@ const name = defaultSettings.title || "vue Admin Template"; // page title
 // You can change the port by the following methods:
 // port = 9528 npm run dev OR npm run dev --port = 9528
 const port = process.env.port || process.env.npm_config_port || 8888; // dev port
-
+// 排除打包
+let externals = {};
+if (process.env.NODE_ENV === "production") {
+  externals = {
+    echarts: "echarts",
+    "element-ui": "ELEMENT",
+    vue: "Vue",
+    xlsx: "XLSX",
+    "cos-js-sdk-v5": "COS",
+  };
+}
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
   /**
@@ -24,7 +34,8 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: "/",
+  // publicPath: "/",
+  publicPath: "./",
   outputDir: "dist",
   assetsDir: "static",
   lintOnSave: false,
@@ -55,9 +66,20 @@ module.exports = {
         "@": resolve("src"),
       },
     },
+    // 忽略打包
+    // 排除 elementUI xlsx  和 vue
+    externals,
   },
+
+  //
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
+    // cdn
+    config.plugin("html").tap((args) => {
+      args[0].myEnv = process.env.NODE_ENV;
+      return args;
+    });
+
     config.plugin("preload").tap(() => [
       {
         rel: "preload",
@@ -71,7 +93,7 @@ module.exports = {
     // when there are many pages, it will cause too many meaningless requests
     config.plugins.delete("prefetch");
 
-    // set svg-sprite-loader
+    // set -sprite-loader
     config.module.rule("svg").exclude.add(resolve("src/icons")).end();
     config.module
       .rule("icons")
@@ -120,7 +142,7 @@ module.exports = {
         },
       });
       // https:// webpack.js.org/configuration/optimization/#optimizationruntimechunk
-      config.optimization.runtimeChunk("single");
+      config.optimization.runtimeChunk("single"); //runtimeChunk
     });
   },
 };

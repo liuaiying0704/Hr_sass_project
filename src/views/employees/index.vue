@@ -12,10 +12,10 @@
             size="small"
             type="warning"
             @click="$router.push('/import')"
-            v-isHas="point.employees.import"
           >
             导入</el-button
           >
+          <!-- v-isHas="point.employees.import"导入权限 -->
           <el-button size="small" type="danger" @click="excelExport"
             >导出</el-button
           >
@@ -141,6 +141,7 @@ const { hireType, exportExcelMapPath } = employee
 import mixinsPermissionPoint from '@/mixins/permission'
 
 export default {
+  name: 'employees',
   data() {
     return {
       employees: [],

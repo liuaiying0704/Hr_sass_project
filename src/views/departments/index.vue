@@ -43,6 +43,7 @@ import { getDeptsApi } from '@/api/departments'
 import { transListToTree } from '@/utils/index'
 import AddDept from './components/add-dept.vue'
 export default {
+  name: 'departments',
   components: {
     treeTools,
     AddDept
@@ -55,7 +56,7 @@ export default {
         { name: '人事部' }
       ],
       defaultProps: { label: 'name' },
-      company: { name: '传智教育', manager: '负责人' },
+      company: { name: 'BB教育', manager: '负责人' },
       // 弹层
       dialogVisible: false,
       // 穿递给add   treenode

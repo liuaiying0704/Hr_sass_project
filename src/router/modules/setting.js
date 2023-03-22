@@ -2,12 +2,14 @@ import Layout from '@/layout'
 export default {
   path: '/setting',
   component: Layout,
+  name: 'setting',
   meta: {
-    id: 'settings'
+    id: 'settings' // 用来和后端权限做约定的
   },
   children: [
     {
       path: '',
+      name: 'setting',
       component: () => import('@/views/setting'),
       meta: { title: '公司设置', icon: 'setting' }
     }

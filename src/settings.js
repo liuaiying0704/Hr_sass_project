@@ -1,6 +1,6 @@
 module.exports = {
 // 网站标题,修改重新起服务
-  title: 'hrhass',
+  title: 'hr',
 
   /**
    * @type {boolean} true | false

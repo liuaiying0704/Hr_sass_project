@@ -79,13 +79,13 @@ export default {
     },
     // 预览图片
     onPreview(file, fileList) {
-      //   console.log(file)
+      console.log(file)
       this.imgUrl = file.url
       this.visible = true
     },
     // 一般进行校验图片的格式
     beforeUpload(file) {
-      const types = ['image/jpeg', 'image/gif', 'image/jpg']
+      const types = ['image/jpeg', 'image/gif', 'image/jpg', 'image/png']
       if (!types.includes(file.type)) {
         this.$message.error('请上传' + types.join('、') + '格式')
         // return false  返回false不会上传

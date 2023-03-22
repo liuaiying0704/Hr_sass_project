@@ -17,7 +17,7 @@ export const imgError = {
     // 参数1：el为自定义指令的名字
     // 参数2：配置对象
     // 监听DOM加载失败的事件
-    // console.log(el)
+    console.log(el)
     if (!el.src) {
       el.src = value
     } else {

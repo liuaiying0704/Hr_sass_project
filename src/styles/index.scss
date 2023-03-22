@@ -1,9 +1,9 @@
-@import "./variables.scss";
-@import "./mixin.scss";
-@import "./transition.scss";
-@import "./element-ui.scss";
-@import "./sidebar.scss";
-@import "./common.scss";
+@import './variables.scss';
+@import './mixin.scss';
+@import './transition.scss';
+@import './element-ui.scss';
+@import './sidebar.scss';
+@import './common.scss';
 
 body {
   height: 100%;
@@ -55,7 +55,7 @@ div:focus {
     visibility: hidden;
     display: block;
     font-size: 0;
-    content: " ";
+    content: '';
     clear: both;
     height: 0;
   }
@@ -64,4 +64,9 @@ div:focus {
 // main-container global css
 .app-container {
   padding: 20px;
+}
+
+.tags-view-container .tags-view-wrapper .tags-view-item.active {
+  background-color: #888 !important;
+  border: none !important;
 }

@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 /**
- * 获取组织架构
+ * 获取组织架构 1
  * @returns promise
  */
 export function getDeptsApi() {
@@ -9,7 +9,7 @@ export function getDeptsApi() {
   })
 }
 /**
- *删除部门
+ *删除部门1
  * @param {*} id 要删除部门的id
  * @returns promise
  */
@@ -20,7 +20,7 @@ export function delDeptsApi(id) {
   })
 }
 /**
- * 添加子部门
+ * 添加子部门1
  * @param {*} data  对象
  * @returns promise
  */
@@ -44,7 +44,7 @@ export function editDeptApi(id) {
   })
 }
 
-//  /company/department/{id}
+//  /company/department/{id}  1
 export function setEditDeptsApi(data) {
   return request({
     url: '/company/department/' + data.id,

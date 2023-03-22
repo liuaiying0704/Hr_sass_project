@@ -5,18 +5,21 @@
       class="hamburger-container"
       @toggleClick="toggleSideBar"
     />
+    <!--  {{ $store.state.user.userInfo.companyName }} -->
     <div class="app-breadcrumb">
-      {{ $store.state.user.userInfo.companyName }}
+      有限公司
       <span class="breadBtn">体验版</span>
     </div>
 
     <div class="right-menu">
+      <ToggleLang />
+      <FullSrcreen />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img
-            :src="$store.state.user.userInfo.staffPhoto"
+            v-imgError="require('@/assets/common/head.jpg')"
+            :src="$store.getters.avatar"
             class="user-avatar"
-            v-imgError="defaultImg"
           />
           <!-- 自定义指令 -->
           <span> {{ $store.state.user.userInfo.username }}</span>
@@ -118,7 +121,7 @@ export default {
     float: right;
     height: 100%;
     line-height: 50px;
-
+    display: flex;
     &:focus {
       outline: none;
     }
@@ -148,7 +151,7 @@ export default {
         position: relative;
         // margin-top: 5px;
         // 开启flex
-        display: flex;
+
         align-items: center;
         color: #fff;
 
@@ -163,7 +166,7 @@ export default {
           cursor: pointer;
           position: absolute;
           right: -20px;
-          // top: 25px;
+          top: 25px;
           font-size: 12px;
         }
       }
